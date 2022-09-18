@@ -1,33 +1,23 @@
-import mysql.connector
-from mysql.connector import Error
+import MySQLdb
 
-connection = mysql.connector.connect(
-    host="192.168.56.103",
-    port=3306,
+connection = MySQLdb.connect(
+    host="localhost",
     user="michalflask",
     passwd="28111992",
     db="flaskdb")
 
-try:
-    if connection.is_connected():
-        cursor = connection.cursor()
-        cursor.execute("select database();")
-        db = cursor.fetchone()
-        print("You're connected to dtabase: ", db)
-except Error as e:
-    print("Error while connecting to MySQL", e)
-finally:
-    if connection.is_connected():
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed")
+cursor = connection.cursor()
+cursor.execute("select database();")
+db = cursor.fetchone()
 
-
+if db:
+    print("You're connected to database: ", db)
+else:
+    print('Not connected.')
 import csv
 
 
 def insert_csv_to_db(path_to_csv):
-
     csvfile = open(path_to_csv, newline='')
     # make a new variable - c - for Python's DictReader object
     c = csv.DictReader(csvfile)
@@ -41,9 +31,7 @@ def insert_csv_to_db(path_to_csv):
         values = (row['Meeting Name'], row['Meeting Start Time'], row['Meeting End Time'],
                   row['Name'], row['Attendee Email'], row['Join Time'], row['Leave Time'],
                   row['Attendance Duration'], row['Connection Type'])
-        #mysql.query(sql, values)
+        cursor.execute(sql, values)
 
 
-
-
-#insert_csv_to_db('static/files/participant-20220803171244.csv')
+insert_csv_to_db('static/files/participant-20220803171244.csv')
