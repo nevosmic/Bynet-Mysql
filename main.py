@@ -1,7 +1,9 @@
 import csv
 from db_connection import *
+from sftp_connection import *
 
 connection, cursor = get_connection_to_mysql()
+
 
 
 def init_db():
@@ -56,5 +58,11 @@ def parse_times(start_, end_, join_, leave_, duration_):
     return start, end, join, leave, duration
 
 
-init_db()
-insert_csv_to_db('static/files/participant-20220803171244.csv')
+if __name__ == "__main__":
+    
+    csv_files = sftp_connect()
+    init_db()
+    for file_name in csv_files:
+        file_path = 'static/files/{}'.format(file_name)
+        insert_csv_to_db(file_path)
+    print("Done !")

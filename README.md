@@ -1,8 +1,8 @@
 # Bynet-Mysql
-pip install mysql-connector-python
+pip install mysqlclient
+pip install pysftp
 
-
-This is how I create the table:
+This is how I have created the table:
 
 CREATE TABLE `flaskdb`.`csv_table` (
   `id` INT NOT NULL AUTO_INCREMENT,
