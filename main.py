@@ -2,7 +2,7 @@ import csv
 from db_connection import *
 from sftp_connection import *
 
-connection, cursor = get_connection_to_mysql()
+connection, cursor = connect()
 
 
 

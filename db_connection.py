@@ -1,13 +1,14 @@
-import MySQLdb
+import configparser
+import MySQLdb.cursors
 
+config = configparser.ConfigParser()
+config.read('config.ini')
 
-def get_connection_to_mysql():
-    connection = MySQLdb.connect(
-        host="localhost",
-        user="michalflask",
-        passwd="28111992",
-        db="flaskdb")
-
+def connect():
+    connection = MySQLdb.connect(host = config['mysqlDB']['host'],
+                           user = config['mysqlDB']['user'],
+                           passwd = config['mysqlDB']['pass'],
+                           db = config['mysqlDB']['db'])
     cursor = connection.cursor()
     cursor.execute("select database();")
     db = cursor.fetchone()
@@ -17,4 +18,7 @@ def get_connection_to_mysql():
     else:
         print('Not connected.')
     return connection, cursor
+
+
+   
 
